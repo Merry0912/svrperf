@@ -1,0 +1,36 @@
+#!/bin/bash
+
+##### Server Performance Stats ####
+##### Date: 2023   ##############
+
+echo "CPU USAGE"
+
+CPU_IDLE=$(top -bn1 | grep "Cpu(s)" | awk '{print $8}' | cut -d'.' -f1)
+CPU_USAGE=$((100 - CPU_IDLE))
+echo "Total CPU Usage: $CPU_USAGE%"
+
+echo "MEMORY USAGE"
+
+MEM_INFO=$(free -m)
+TOTAL_MEM=$(echo "$MEM_INFO" | awk '/Mem:/ {print $2}')
+USED_MEM=$(echo "$MEM_INFO" | awk '/Mem:/ {print $3}')
+FREE_MEM=$(echo "$MEM_INFO" | awk '/Mem:/ {print $4}')
+MEM_USAGE_PERCENT=$(awk "BEGIN {printf \"%.2f\", ($USED_MEM/$TOTAL_MEM)*100}")
+echo "Total Memory: ${TOTAL_MEM}MB"
+echo "Used Memory: ${USED_MEM}MB"
+echo "Free Memory: ${FREE_MEM}MB"
+echo "Memory Usage: $MEM_USAGE_PERCENT%"
+
+echo "DISK USAGE"
+
+DISK_INFO=$(df -h / | tail -1)
+TOTAL_DISK=$(echo $DISK_INFO | awk '{print $2}')
+USED_DISK=$(echo $DISK_INFO | awk '{print $3}')
+AVAIL_DISK=$(echo $DISK_INFO | awk '{print $4}')
+USE_PERCENT=$(echo $DISK_INFO | awk '{print $5}')
+echo "Total Disk Space: $TOTAL_DISK"
+echo "Used Disk Space: $USED_DISK"
+echo "Available Disk Space: $AVAIL_DISK"
+  echo "Disk Usage: $USE_PERCENT"  
+
+:qw!    
